@@ -9,7 +9,7 @@
 #include <string>
 #include "date.h"
 using namespace std;
-using namespace DateNameSpace;
+//using namespace DateNameSpace;
 
 int main()
 {
@@ -42,11 +42,11 @@ int main()
    */
    // default - MiddleEndian, Slash, Numeric, NoWeekday
 
-/*
    d1.setDate(2,5,2019);
 
    cout << "----------------- MiddleEndian -------------------\n";
    cout << "Date: " << d1 << endl;  // Date: 2/5/2019
+   cout << "First" << endl;
    cout << "Date: " << left << setw(12) << d1 << '*' << endl;  
    cout << "Date: " << right << setw(12) << d1 << '*' << endl;  
    cout << "Date: " << d1 << endl;  // Date: 2/5/2019
@@ -62,6 +62,7 @@ int main()
    cout << "Date: " << d1 << endl;  // Date: Tuesday, February 5, 2019
    Date::outputFormat(NoWeekday);  // return to default
    cout << "Date: " << d1 << endl;  // Date: February 5, 2019
+/*
    cout << "----------------- LittleEndian -------------------\n";
    Date::outputFormat(Slash);  // default
    Date::outputFormat(Numeric);  // default

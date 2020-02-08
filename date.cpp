@@ -5,10 +5,11 @@
 // the Date Class
 
 #include <iostream>
+#include <sstream>
 #include <ctime>
 #include "date.h"
 using namespace std;
-using namespace DateNameSpace;
+//using namespace DateNameSpace;
 
 // Description:
 // Precondition:
@@ -29,7 +30,7 @@ Date::Date()
 // Description:
 // Precondition:
 // Postcondition:
-Date::Date(int d, int m, int y)
+Date::Date(int m, int d, int y)
 {
     day = d;
     month = m;
@@ -63,7 +64,7 @@ int Date::getYear() const
 // Description:
 // Precondition:
 // Postcondition:
-void Date::setDate(int newDay, int newMonth, int newYear)
+void Date::setDate(int newMonth, int newDay, int newYear)
 {
     day = newDay;
     month = newMonth;
@@ -77,6 +78,30 @@ void Date::isLeapYear(int Year)
     leapYear = Year % 400 || Year % 4 && Year % 100 != 0;
 }
 
+string Date::convertMonth(int mon) const
+{
+    switch (mon)
+    {
+        case 1: return "January";
+        case 2: return "February";
+        case 3: return "March";
+        case 4: return "April";
+        case 5: return "May";        
+        case 6: return "June";        
+        case 7: return "July";
+        case 8: return "August";
+        case 9: return "September";
+        case 10: return "October";
+        case 11: return "November";
+        case 12: return "December";        
+    }
+    return 0;
+}
+
+string Date::getWeekday(const Date& date) const
+{
+    Date today;
+}
 
 // Description:
 // Precondition:
@@ -124,57 +149,104 @@ MonthFormat Date::monthFormat = Numeric;
 DayOfWeekFormat Date::dayOfWeekFormat = NoWeekday;
 ArithmeticFormat Date::arithmeticFormat = Days;
 
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
 ostream& operator<<(ostream& o, const Date& date)
 {
-    string dateString;
+    string firstDelim, secondDelim;
+    string dateString = "", strDay, strMon, strYr;
+    string weekDay = "Saturday"; 
+    stringstream sd, sm, sy;
+
+    sd << date.getDay(); 
+    sm << date.getMonth();
+    sy << date.getYear();  
+
+    sd >> strDay;
+    sm >> strMon;
+    sy >> strYr;
+
+    sd.clear(); sm.clear(); sy.clear();
+    
+    switch (date.delimiterFormat)
+    {
+        case Slash: firstDelim = '/'; secondDelim = '/'; break;
+        case Dash: firstDelim = '-'; secondDelim = '-'; break;
+        case Space: firstDelim = ' '; secondDelim = ' '; break;
+    }
+
+    if (date.monthFormat == Text)
+    {
+        strMon = date.convertMonth(date.getMonth());
+        firstDelim = " ";
+        secondDelim = ", ";
+    }
+
+    if (date.dayOfWeekFormat == Weekday)
+    {
+        dateString = weekDay + ", ";
+    }
 
     switch (date.orderFormat)
     {
-        case LittleEndian: break;
+        case LittleEndian: 
+            dateString += strDay + firstDelim + strMon +
+                        secondDelim + strYr;
+            o << dateString;
+            break;
+        case MiddleEndian:
+            dateString += strMon + firstDelim + strDay +
+                        secondDelim + strYr;
+            o << dateString;
+            break;
+        case BigEndian:
+            dateString += strYr + firstDelim + strMon +
+                        secondDelim + strDay;
+            o << dateString;
     }
+
+    
 
     return o;
 }
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
 
 
 
