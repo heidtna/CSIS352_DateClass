@@ -11,6 +11,9 @@
 using namespace std;
 //using namespace DateNameSpace;
 
+namespace DateNameSpace
+{
+
 // Description:
 // Precondition:
 // Postcondition:
@@ -302,7 +305,7 @@ ostream& operator<<(ostream& o, const Date& date)
 
 
 
-
+}
 
 /*
 */

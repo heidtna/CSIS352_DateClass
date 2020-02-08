@@ -9,7 +9,7 @@
 #include <string>
 #include "date.h"
 using namespace std;
-//using namespace DateNameSpace;
+using namespace DateNameSpace;
 
 int main()
 {
