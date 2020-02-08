@@ -12,26 +12,27 @@ using namespace std;
 
 namespace DateNameSpace
 {
-    enum orderFormat {LittleEndian, MiddleEndian, BigEndian};
-    enum delimiterFormat {Slash, Dash, Space};
-    enum monthFormat {Text, Numeric};
-    enum dayOfWeekFormat {Weekday, NoWeekday};
-    enum arithmeticFormat {Day, Month, Year};
+    enum OrderFormat {LittleEndian, MiddleEndian, BigEndian};
+    enum DelimiterFormat {Slash, Dash, Space};
+    enum MonthFormat {Text, Numeric};
+    enum DayOfWeekFormat {Weekday, NoWeekday};
+    enum ArithmeticFormat {Days, Months, Years};
 
     class Date
     {
         public:
             Date();                 // Default Constructor
             Date(int, int, int);    // Constructor that takes Month, Day, Year parameters
-            void getMonth() const;  // Method to retrieve the Month attribute
-            void getDay() const;    // Method to retrieve the Day attribue
-            void getYear() const;   // Method to retrieve the Year attribute
+            int getMonth() const;  // Method to retrieve the Month attribute
+            int getDay() const;    // Method to retrieve the Day attribue
+            int getYear() const;   // Method to retrieve the Year attribute
             void setDate(int, int, int);        // Method to set day, month, and year attributes
-            static void outputFormat(orderFormat);     // Mehtod to determine output format
-            static void outputFormat(delimiterFormat);
-            static void outputFormat(monthFormat);
-            static void outputFormat(dayOfWeekFormat);
-            static void Arithmetic(arithmeticFormat);      // Mehtod to set arithmetic calculations on Day, Month, or Year
+            void isLeapYear(int);
+            static void outputFormat(OrderFormat);     // Mehtod to determine output format
+            static void outputFormat(DelimiterFormat);
+            static void outputFormat(MonthFormat);
+            static void outputFormat(DayOfWeekFormat);
+            static void Arithmetic(ArithmeticFormat);      // Mehtod to set arithmetic calculations on Day, Month, or Year
 
             const Date& operator+=(const Date&);    // Compound assignment operator += overload
             const Date& operator-=(const Date&);    // Compound assignment operator -= overload
@@ -48,11 +49,12 @@ namespace DateNameSpace
             int day;
             int month;
             int year;
-            static orderFormat order; 
-            static delimiterFormat delimiter;
-            static monthFormat month;
-            static dayOfWeekFormat dayOfWeek;       // Static attribute to determine output format
-            static arithmeticFormat arithmetic;     // Static attribute to determine arithmetic calculations
+            bool leapYear;
+            static OrderFormat orderFormat; 
+            static DelimiterFormat delimiterFormat;
+            static MonthFormat monthFormat;
+            static DayOfWeekFormat dayOfWeekFormat;       // Static attribute to determine output format
+            static ArithmeticFormat arithmeticFormat;     // Static attribute to determine arithmetic calculations
 
     };
     istream& operator>>(istream&, Date&);   // Input Overload

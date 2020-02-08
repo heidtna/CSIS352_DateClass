@@ -42,6 +42,7 @@ int main()
    */
    // default - MiddleEndian, Slash, Numeric, NoWeekday
 
+/*
    d1.setDate(2,5,2019);
 
    cout << "----------------- MiddleEndian -------------------\n";
@@ -103,7 +104,6 @@ int main()
    Date::outputFormat(Numeric);  // default
    Date::outputFormat(NoWeekday);  // default
    Date::outputFormat(MiddleEndian);  // default
-
 // Your Date class should throw exceptions whenever a possible error
 // could occur.  Create your own DateException class.
 
@@ -183,9 +183,12 @@ int main()
    {
       cout << error.what() << endl;
    }
+*/
+
 
 /*************** NEXT LEVEL FOR 25% MORE CREDIT ******************/
-  
+
+/*
    cout << "----------------------------------------------------------\n";
    Date today; // current date
    d2 = today;
@@ -202,11 +205,12 @@ int main()
    d3 = --d2;
    --d2;
    cout << d3 << endl << d2 << endl;
+*/ 
 
 
 /*************** NEXT LEVEL FOR 25% MORE CREDIT ******************/
 
-
+/*
    cout << "----------------------------------------------------------\n";
    Date::Arithmetic(Years);  // the default is Days
    Date FluxCapacitor(11,5,1955);  // November 5, 1955
@@ -304,14 +308,17 @@ int main()
    num -= d1-d2;
    num += d1-d2;
    cout << "num is " << num << endl;
-   
+*/
+
 /************************* BONUS LEVEL ***************************/
 
+/*
    cout << "----------------------------------------------------------\n";
    Date::Arithmetic(Months);
    cout << "don't forget that you have an appointment in " 
         << appointment.until() << " months!\n";
-        
+*/
+       
 // All operators and methods that apply to Days and Years must
 // also apply to Months if you are to receive bonus points.
 // Everything works for Months or no bonus.  I am aware that Months
