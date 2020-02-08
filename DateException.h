@@ -12,14 +12,17 @@ using namespace std;
 
 namespace DateNameSpace
 {
-    class DateException
-    {
-        public:
-            string what()
-            {
-                return "Exception";
-            }
-    };
+
+class DateException
+{
+    public:
+        DateException(const string& m);
+        string what();
+    
+    private:
+        string message;
+};
+
 }
 
 #endif

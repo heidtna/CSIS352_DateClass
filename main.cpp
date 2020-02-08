@@ -143,6 +143,7 @@ int main()
       cout << "That's right, they're all equal\n";
    else
       cout << "my program has problems";
+*/
 // Overload all relational operators
 
    Date LincolnBirthday(2,12,1809);
@@ -152,6 +153,7 @@ int main()
         << LincolnBirthday.getDayOfWeek() << " and died on a "
         << LincolnDeath.getDayOfWeek() << ".\n";
 
+/*
    Date myBirthday;
    try
    {

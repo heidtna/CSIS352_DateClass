@@ -8,6 +8,7 @@
 #include <sstream>
 #include <ctime>
 #include "date.h"
+#include "DateException.h"
 using namespace std;
 //using namespace DateNameSpace;
 
@@ -35,9 +36,10 @@ Date::Date()
 // Postcondition:
 Date::Date(int m, int d, int y)
 {
-    day = d;
-    month = m;
     year = y;
+    month = m;
+    day = d;
+    isLeapYear(year);
 }
 
 // Description:
@@ -79,7 +81,7 @@ void Date::setDate(int newMonth, int newDay, int newYear)
 // Postcondition:
 void Date::isLeapYear(int Year)
 {
-    leapYear = Year % 400 || Year % 4 && Year % 100 != 0;
+    leapYear = Year % 400 == 0 || Year % 4 == 0 && Year % 100 != 0;
 }
 
 string Date::convertMonth(int mon) const
@@ -102,17 +104,19 @@ string Date::convertMonth(int mon) const
     return 0;
 }
 
-void Date::getWeekday(const Date& date) const
+//void Date::getWeekday(const Date& date) const
+//string Date::getDayOfWeek(const Date& date) const
+string Date::getDayOfWeek() const
 {
     int centuries;
     int months;
     int dayOfWeek;
 
-    centuries = (3 - date.year / 100 % 4) * 2;
+    centuries = (3 - year / 100 % 4) * 2;
 
-    switch (date.month)
+    switch (month)
     {
-        case 1: if (date.leapYear)
+        case 1: if (leapYear)
                 {
                     months = 6;
                 }
@@ -121,7 +125,7 @@ void Date::getWeekday(const Date& date) const
                     months = 0;
                 }
                 break;
-        case 2: if (date.leapYear)
+        case 2: if (leapYear)
                 {
                     months = 2;
                 }
@@ -146,14 +150,23 @@ void Date::getWeekday(const Date& date) const
 
     switch (dayOfWeek)
     {
-        case 0: cout << "Sunday"; break;
-        case 1: cout << "Monday"; break;
-        case 2: cout << "Tuesday"; break;
-        case 3: cout << "Wednesday"; break;
-        case 4: cout << "Thursday"; break;
-        case 5: cout << "Friday"; break;
-        case 6: cout << "Saturday"; break;      
-    }            
+        // case 0: cout << "Sunday"; break;
+        // case 1: cout << "Monday"; break;
+        // case 2: cout << "Tuesday"; break;
+        // case 3: cout << "Wednesday";break;
+        // case 4: cout << "Thursday"; break;
+        // case 5: cout << "Friday"; break;
+        // case 6: cout << "Saturday"; break;
+
+        case 0: return "Sunday";
+        case 1: return "Monday";
+        case 2: return "Tuesday";
+        case 3: return "Wednesday";
+        case 4: return "Thursday";
+        case 5: return "Friday";
+        case 6: return "Saturday";      
+    }        
+    return 0;    
 }
 
 // Description:
@@ -206,7 +219,6 @@ ostream& operator<<(ostream& o, const Date& date)
 {
     string firstDelim, secondDelim;
     string dateString = "", strDay, strMon, strYr;
-    string weekDay = "Saturday"; 
     stringstream sd, sm, sy;
 
     sd << date.getDay(); 
@@ -239,7 +251,8 @@ ostream& operator<<(ostream& o, const Date& date)
 
     if (date.dayOfWeekFormat == Weekday)
     {
-        dateString = weekDay + ", ";
+        dateString += date.getDayOfWeek();
+        dateString += ", ";
     }
 
     switch (date.orderFormat)

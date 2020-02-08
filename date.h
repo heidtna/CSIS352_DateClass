@@ -30,7 +30,9 @@ class Date
         void setDate(int, int, int);        // Method to set day, month, and year attributes
         void isLeapYear(int);
         string convertMonth(int) const;
-        void getWeekday(const Date&) const;
+        //void getWeekday(const Date&) const;
+        //string getDayOfWeek(const Date&) const;
+        string getDayOfWeek() const;
         static void outputFormat(OrderFormat);     // Mehtod to determine output format
         static void outputFormat(DelimiterFormat);
         static void outputFormat(MonthFormat);

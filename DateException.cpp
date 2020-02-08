@@ -6,3 +6,17 @@
 
 #include "DateException.h"
 
+namespace DateNameSpace
+{
+
+DateException::DateException(const string& m)
+{
+    message = m;
+}
+
+string DateException::what()
+{
+    return message;
+}
+
+}
