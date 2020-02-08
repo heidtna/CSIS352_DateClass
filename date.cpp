@@ -69,6 +69,7 @@ void Date::setDate(int newMonth, int newDay, int newYear)
     day = newDay;
     month = newMonth;
     year = newYear;
+    isLeapYear(year);
 }
 // Description:
 // Precondition:
@@ -98,9 +99,58 @@ string Date::convertMonth(int mon) const
     return 0;
 }
 
-string Date::getWeekday(const Date& date) const
+void Date::getWeekday(const Date& date) const
 {
-    Date today;
+    int centuries;
+    int months;
+    int dayOfWeek;
+
+    centuries = (3 - date.year / 100 % 4) * 2;
+
+    switch (date.month)
+    {
+        case 1: if (date.leapYear)
+                {
+                    months = 6;
+                }
+                else
+                {
+                    months = 0;
+                }
+                break;
+        case 2: if (date.leapYear)
+                {
+                    months = 2;
+                }
+                else
+                {
+                    months = 3;
+                }
+                break;
+        case 3: months = 3; break;
+        case 4: months = 6; break;
+        case 5: months = 1; break;
+        case 6: months = 4; break;
+        case 7: months = 6; break;
+        case 8: months = 2; break;
+        case 9: months = 5; break;
+        case 10: months = 0; break;
+        case 11: months = 3; break;
+        case 12: months = 5; break;
+    }
+
+    dayOfWeek = (centuries + year%100 + year%100/4 + months+day)%7;
+
+    switch (dayOfWeek)
+    {
+        case 0: cout << "Sunday"; break;
+        case 1: cout << "Monday"; break;
+        case 2: cout << "Tuesday"; break;
+        case 3: cout << "Wednesday"; break;
+        case 4: cout << "Thursday"; break;
+        case 5: cout << "Friday"; break;
+        case 6: cout << "Saturday"; break;      
+    }            
 }
 
 // Description:
@@ -178,6 +228,10 @@ ostream& operator<<(ostream& o, const Date& date)
         strMon = date.convertMonth(date.getMonth());
         firstDelim = " ";
         secondDelim = ", ";
+        if (date.orderFormat == BigEndian)
+        {
+            secondDelim = " ";
+        }
     }
 
     if (date.dayOfWeekFormat == Weekday)

@@ -62,7 +62,6 @@ int main()
    cout << "Date: " << d1 << endl;  // Date: Tuesday, February 5, 2019
    Date::outputFormat(NoWeekday);  // return to default
    cout << "Date: " << d1 << endl;  // Date: February 5, 2019
-/*
    cout << "----------------- LittleEndian -------------------\n";
    Date::outputFormat(Slash);  // default
    Date::outputFormat(Numeric);  // default
@@ -108,6 +107,7 @@ int main()
 // Your Date class should throw exceptions whenever a possible error
 // could occur.  Create your own DateException class.
 
+/*
    try
    {
       d1.setDate(13,5,2000);
