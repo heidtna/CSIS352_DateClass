@@ -18,19 +18,21 @@ namespace DateNameSpace
 // Postcondition: Date members are set to reflect current date
 Date::Date()
 {
-    tm *current;
-    time_t lt;
-    lt = time(0);
-    current = localtime(&lt);
+    setToday();
+    // tm *current;
+    // time_t lt;
+    // lt = time(0);
+    // current = localtime(&lt);
 
-    day = current->tm_mday;
-    month = current->tm_mon+1;
-    year = current->tm_year+1900;
+    // day = current->tm_mday;
+    // month = current->tm_mon+1;
+    // year = current->tm_year+1900;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Constructor to initialize Date members to parameter
+//              values if values are valid
+// Precondition: None
+// Postcondition: Date object is created and members are set
 Date::Date(int m, int d, int y)
 {
     if (isValidDate(m, d, y))
@@ -41,33 +43,44 @@ Date::Date(int m, int d, int y)
     }
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Return a Date object whose members are set to 
+//              current date values
+// Precondition: None
+// Postcondition: Date object initialized to current Date
+//                is returned
+Date Date::Today()
+{
+    return Date();
+}
+
+// Description: Returns the month member of the Date object
+// Precondition: Date object exists and is initialized
+// Postcondition: Date object month member is returned
 int Date::getMonth() const
 {
     return month;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Returns the day member of the Date object
+// Precondition: Date object exists and is initialized
+// Postcondition: Date object day member is returned
 int Date::getDay() const
 {
     return day;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Returns the year member of the Date object
+// Precondition: Date object exists and is initialized
+// Postcondition: Date object year member is returned
 int Date::getYear() const
 {
     return year;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Sets the members of a Date object only if
+//              passed parameters are valid
+// Precondition: Date object exists and parameters are valid
+// Postcondition: Date object members are set to passed parameters
 void Date::setDate(int newMonth, int newDay, int newYear)
 {
     if (isValidDate(newMonth, newDay, newYear))
@@ -78,9 +91,23 @@ void Date::setDate(int newMonth, int newDay, int newYear)
     }
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+void Date::setToday()
+{
+    tm *current;
+    time_t lt;
+    lt = time(0);
+    current = localtime(&lt);
+
+    day = current->tm_mday;
+    month = current->tm_mon+1;
+    year = current->tm_year+1900;
+}
+
+// Description: Return a string containing the name of 
+//              the month for the passed integer value
+// Precondition: Date object exists and is initialized
+// Postcondition: A string containing the name of the month
+//                is returned
 string Date::convertMonth(int mon) const
 {
     switch (mon)
@@ -101,6 +128,11 @@ string Date::convertMonth(int mon) const
     return 0;
 }
 
+// Description: Calculates and returns a string containing
+//              the name of the day of the week for a Date object
+// Precondition: Date object exists and is initialized
+// Postcondition: String conataining the name of the day of 
+//                the week is returned
 string Date::getDayOfWeek() const
 {
     int centuries;
@@ -156,41 +188,46 @@ string Date::getDayOfWeek() const
     return 0;    
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Changes the member that determines the output
+//              order of Date members
+// Precondition: Date object exists and is initialized
+// Postcondition: Date member orderFormat is set
 void Date::outputFormat(OrderFormat oFormat)
 {
     orderFormat = oFormat;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Changes the member that determines the type
+//              of delimiter used in output
+// Precondition: Date object exists and is initialized
+// Postcondition: Date member delimiterFormat is set
 void Date::outputFormat(DelimiterFormat delimFormat)
 {
     delimiterFormat = delimFormat;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Changes the member that determines the output
+//              format for the month Date member
+// Precondition: Date object exists and is initialized
+// Postcondition: Date member monthFormat is set
 void Date::outputFormat(MonthFormat monFormat)
 {
     monthFormat = monFormat;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Changes the member that determines if the
+//              day of the week is output
+// Precondition: Date object exists and is initialized
+// Postcondition: Date member dayOfWeekFormat is set
 void Date::outputFormat(DayOfWeekFormat dowFormat)
 {
     dayOfWeekFormat = dowFormat;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Changes the member that determines the members
+//              used for arithmetic calculations
+// Precondition: Date object exists and is initialized
+// Postcondition: Date member arithmeticFormat is set
 void Date::Arithmetic(ArithmeticFormat arithFormat)
 {
     arithmeticFormat = arithFormat;
@@ -202,6 +239,9 @@ MonthFormat Date::monthFormat = Numeric;
 DayOfWeekFormat Date::dayOfWeekFormat = NoWeekday;
 ArithmeticFormat Date::arithmeticFormat = Days;
 
+// Description:
+// Precondition:
+// Postcondition:
 ostream& operator<<(ostream& o, const Date& date)
 {
     string firstDelim, secondDelim;
@@ -264,10 +304,25 @@ ostream& operator<<(ostream& o, const Date& date)
 
     return o;
 }
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Overrides input operator to function with
+//              Date objects and sets members if valid
+// Precondition: Date object exists and is initialized
+//               Input format must be integers and in order
+//               of month, day, year
+// Postcondition: Date object members are set
+istream& operator>>(istream& i, Date& date)
+{
+    int tmpMonth, tmpDay, tmpYear;
+    i >> tmpMonth; i.get();
+    i >> tmpDay; i.get();
+    i >> tmpYear;
 
+    if (isValidDate(tmpMonth, tmpDay, tmpYear))
+    {
+        date.setDate(tmpMonth, tmpDay, tmpYear);
+    }
+    return i;
+}
 
 // Description:
 // Precondition:

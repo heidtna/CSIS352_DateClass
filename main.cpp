@@ -132,13 +132,13 @@ int main()
 
    Date d2;  // initialized to current date
    Date d3(1,1,1);
-/*
    d3 = d2;
    d3.setDate(7,20,1969);
    cout << d3.getMonth() << '-' << d3.getDay() << '-' << d3.getYear() << endl;
    Date d4(11,11,2011);
    d3 = Date::Today();  // d3 set to current date
    d4.setToday();  // d4 set to current date
+/*
    if (d2==d3 && d2==d4 && d3==d4)
       cout << "That's right, they're all equal\n";
    else
@@ -153,7 +153,6 @@ int main()
         << LincolnBirthday.getDayOfWeek() << " and died on a "
         << LincolnDeath.getDayOfWeek() << ".\n";
 
-/*
    Date myBirthday;
    try
    {
@@ -186,6 +185,7 @@ int main()
    {
       cout << error.what() << endl;
    }
+/*
 */
 
 

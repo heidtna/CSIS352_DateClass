@@ -24,9 +24,11 @@ class Date
     public:
         Date();                         // Default Constructor
         Date(int, int, int);            // Constructor that takes Month, Day, Year parameters
+        static Date Today();            // Method to return Date object set to current date
         int getMonth() const;           // Method to retrieve the Month attribute
         int getDay() const;             // Method to retrieve the Day attribue
         int getYear() const;            // Method to retrieve the Year attribute
+        void setToday();                // Method to reset Date members to current date values
         void setDate(int, int, int);    // Method to set day, month, and year attributes
         //void setDaysInMonth(int);       // Method to set the number of days in the set month
         string convertMonth(int) const; // Method to return the name of the set integer month
