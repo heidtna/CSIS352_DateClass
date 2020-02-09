@@ -239,6 +239,46 @@ MonthFormat Date::monthFormat = Numeric;
 DayOfWeekFormat Date::dayOfWeekFormat = NoWeekday;
 ArithmeticFormat Date::arithmeticFormat = Days;
 
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
+// Description:
+// Precondition:
+// Postcondition:
+bool Date::operator==(const Date& date) const
+{
+    return month == date.getMonth() && day == date.getDay() && year == date.getYear();
+}
+
+// Description:
+// Precondition:
+// Postcondition:
+
+
 // Description:
 // Precondition:
 // Postcondition:
@@ -323,40 +363,6 @@ istream& operator>>(istream& i, Date& date)
     }
     return i;
 }
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
 
 // Description:
 // Precondition:

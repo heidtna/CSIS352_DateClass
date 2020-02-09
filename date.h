@@ -41,6 +41,10 @@ class Date
 
         const Date& operator+=(const Date&);    // Compound assignment operator += overload
         const Date& operator-=(const Date&);    // Compound assignment operator -= overload
+        const Date& operator++();               // Pre-Increment
+        Date& operator++(int);                  // Post-Increment
+        const Date& operator--();               // Pre-Decrement
+        Date& operator--(int);                  // Post-Decrement
         bool operator>(const Date&) const;      // Relational Operator == overload
         bool operator<(const Date&) const;      // Relational Operator != overload
         bool operator>=(const Date&) const;     // Relational Operator >= overload

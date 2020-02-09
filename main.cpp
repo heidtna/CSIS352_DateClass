@@ -138,11 +138,11 @@ int main()
    Date d4(11,11,2011);
    d3 = Date::Today();  // d3 set to current date
    d4.setToday();  // d4 set to current date
-/*
    if (d2==d3 && d2==d4 && d3==d4)
       cout << "That's right, they're all equal\n";
    else
       cout << "my program has problems";
+/*
 */
 // Overload all relational operators
 
@@ -191,11 +191,11 @@ int main()
 
 /*************** NEXT LEVEL FOR 25% MORE CREDIT ******************/
 
-/*
    cout << "----------------------------------------------------------\n";
    Date today; // current date
    d2 = today;
    cout << d2 << endl;
+/*
    d3 = d2++;  // increment a day
    cout << d2 << endl;
    d3++;
