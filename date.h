@@ -64,6 +64,17 @@ class Date
 };
 istream& operator>>(istream&, Date&);   // Input Overload
 
+class DateException
+{
+    public:
+        DateException(const string& m = "");
+        string what();
+    
+    private:
+        string message;
+};
+
+
 }
 
 #endif

@@ -107,7 +107,6 @@ int main()
 // Your Date class should throw exceptions whenever a possible error
 // could occur.  Create your own DateException class.
 
-/*
    try
    {
       d1.setDate(13,5,2000);
@@ -117,6 +116,7 @@ int main()
       cout << error.what() << endl;
       cout << "    d1 is still " << d1 << endl;
    }
+/*
 
    try
    {

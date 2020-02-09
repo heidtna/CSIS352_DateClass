@@ -8,7 +8,6 @@
 #include <sstream>
 #include <ctime>
 #include "date.h"
-#include "DateException.h"
 using namespace std;
 //using namespace DateNameSpace;
 
@@ -75,7 +74,13 @@ void Date::setDate(int newMonth, int newDay, int newYear)
     month = newMonth;
     year = newYear;
     isLeapYear(year);
+
+    if (newMonth > 12 || newMonth < 1)
+    {
+        throw DateException("Date Exception: Month value out of range");
+    }    
 }
+
 // Description:
 // Precondition:
 // Postcondition:
@@ -316,7 +321,15 @@ ostream& operator<<(ostream& o, const Date& date)
 // Precondition:
 // Postcondition:
 
+DateException::DateException(const string& m)
+{
+    message = m;
+}
 
+string DateException::what()
+{
+    return message;
+}
 
 }
 
