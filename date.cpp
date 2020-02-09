@@ -9,14 +9,13 @@
 #include <ctime>
 #include "date.h"
 using namespace std;
-//using namespace DateNameSpace;
 
 namespace DateNameSpace
 {
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Default constructor
+// Precondition: None
+// Postcondition: Date members are set to reflect current date
 Date::Date()
 {
     tm *current;
@@ -27,7 +26,6 @@ Date::Date()
     day = current->tm_mday;
     month = current->tm_mon+1;
     year = current->tm_year+1900;
-    isLeapYear(year);
 }
 
 // Description:
@@ -35,10 +33,12 @@ Date::Date()
 // Postcondition:
 Date::Date(int m, int d, int y)
 {
-    year = y;
-    month = m;
-    day = d;
-    isLeapYear(year);
+    if (isValidDate(m, d, y))
+    {
+        year = y;
+        month = m;
+        day = d;
+    }
 }
 
 // Description:
@@ -70,25 +70,17 @@ int Date::getYear() const
 // Postcondition:
 void Date::setDate(int newMonth, int newDay, int newYear)
 {
-    day = newDay;
-    month = newMonth;
-    year = newYear;
-    isLeapYear(year);
-
-    if (newMonth > 12 || newMonth < 1)
+    if (isValidDate(newMonth, newDay, newYear))
     {
-        throw DateException("Date Exception: Month value out of range");
-    }    
+        year = newYear;
+        month = newMonth;
+        day = newDay;
+    }
 }
 
 // Description:
 // Precondition:
 // Postcondition:
-void Date::isLeapYear(int Year)
-{
-    leapYear = Year % 400 == 0 || Year % 4 == 0 && Year % 100 != 0;
-}
-
 string Date::convertMonth(int mon) const
 {
     switch (mon)
@@ -109,8 +101,6 @@ string Date::convertMonth(int mon) const
     return 0;
 }
 
-//void Date::getWeekday(const Date& date) const
-//string Date::getDayOfWeek(const Date& date) const
 string Date::getDayOfWeek() const
 {
     int centuries;
@@ -121,7 +111,7 @@ string Date::getDayOfWeek() const
 
     switch (month)
     {
-        case 1: if (leapYear)
+        case 1: if (isLeapYear(year))
                 {
                     months = 6;
                 }
@@ -130,7 +120,7 @@ string Date::getDayOfWeek() const
                     months = 0;
                 }
                 break;
-        case 2: if (leapYear)
+        case 2: if (isLeapYear(year))
                 {
                     months = 2;
                 }
@@ -155,14 +145,6 @@ string Date::getDayOfWeek() const
 
     switch (dayOfWeek)
     {
-        // case 0: cout << "Sunday"; break;
-        // case 1: cout << "Monday"; break;
-        // case 2: cout << "Tuesday"; break;
-        // case 3: cout << "Wednesday";break;
-        // case 4: cout << "Thursday"; break;
-        // case 5: cout << "Friday"; break;
-        // case 6: cout << "Saturday"; break;
-
         case 0: return "Sunday";
         case 1: return "Monday";
         case 2: return "Tuesday";
@@ -320,6 +302,64 @@ ostream& operator<<(ostream& o, const Date& date)
 // Description:
 // Precondition:
 // Postcondition:
+
+// Description:
+// Precondition:
+// Postcondition:
+bool isValidDate(int chkMonth, int chkDay, int chkYear)
+{
+    if (chkMonth < 1 || chkMonth > 12)
+    {
+        throw DateException("Date Exception: Month is out of range");
+        return 0;
+    }
+    
+    else if (chkDay > daysInMonth(chkMonth, chkYear))
+    {
+        throw DateException("Date Exception: Day is out of range");
+        return 0;
+    }
+    return 1;
+}
+
+// Description:
+// Precondition:
+// Postcondition:
+bool isLeapYear(int Year)
+{
+    return Year % 400 == 0 || Year % 4 == 0 && Year % 100 != 0;
+}
+
+// Description:
+// Precondition:
+// Postcondition:
+int daysInMonth(int monthToCheck, int inYear)
+{
+    switch (monthToCheck)
+    {
+        case 1  :   return 31;
+        case 2  :   if (isLeapYear(inYear))
+                    {
+                        return 29;
+                    }
+                    else
+                    {
+                        return 28;
+                    }
+        case 3  :   return 31;
+        case 4  :   return 30;
+        case 5  :   return 31;
+        case 6  :   return 30;
+        case 7  :   return 31;
+        case 8  :   return 31;
+        case 9  :   return 30;
+        case 10 :   return 31;
+        case 11 :   return 30;
+        case 12 :   return 31;
+        default :   return -1;
+    }
+    return 0;
+}
 
 DateException::DateException(const string& m)
 {

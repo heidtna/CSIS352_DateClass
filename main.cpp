@@ -116,7 +116,6 @@ int main()
       cout << error.what() << endl;
       cout << "    d1 is still " << d1 << endl;
    }
-/*
 
    try
    {
@@ -133,6 +132,7 @@ int main()
 
    Date d2;  // initialized to current date
    Date d3(1,1,1);
+/*
    d3 = d2;
    d3.setDate(7,20,1969);
    cout << d3.getMonth() << '-' << d3.getDay() << '-' << d3.getYear() << endl;

@@ -22,22 +22,20 @@ enum ArithmeticFormat {Days, Months, Years};
 class Date
 {
     public:
-        Date();                 // Default Constructor
-        Date(int, int, int);    // Constructor that takes Month, Day, Year parameters
-        int getMonth() const;  // Method to retrieve the Month attribute
-        int getDay() const;    // Method to retrieve the Day attribue
-        int getYear() const;   // Method to retrieve the Year attribute
-        void setDate(int, int, int);        // Method to set day, month, and year attributes
-        void isLeapYear(int);
-        string convertMonth(int) const;
-        //void getWeekday(const Date&) const;
-        //string getDayOfWeek(const Date&) const;
-        string getDayOfWeek() const;
-        static void outputFormat(OrderFormat);     // Mehtod to determine output format
-        static void outputFormat(DelimiterFormat);
-        static void outputFormat(MonthFormat);
-        static void outputFormat(DayOfWeekFormat);
-        static void Arithmetic(ArithmeticFormat);      // Mehtod to set arithmetic calculations on Day, Month, or Year
+        Date();                         // Default Constructor
+        Date(int, int, int);            // Constructor that takes Month, Day, Year parameters
+        int getMonth() const;           // Method to retrieve the Month attribute
+        int getDay() const;             // Method to retrieve the Day attribue
+        int getYear() const;            // Method to retrieve the Year attribute
+        void setDate(int, int, int);    // Method to set day, month, and year attributes
+        //void setDaysInMonth(int);       // Method to set the number of days in the set month
+        string convertMonth(int) const; // Method to return the name of the set integer month
+        string getDayOfWeek() const;    // Method to return the day of the week for the set date
+        static void outputFormat(OrderFormat);      // Method to set the order of the output
+        static void outputFormat(DelimiterFormat);  // Method to set the delimiter of the output
+        static void outputFormat(MonthFormat);      // Method to set the output format of the month member
+        static void outputFormat(DayOfWeekFormat);  // Method to set whether the day of the week is output
+        static void Arithmetic(ArithmeticFormat);   // Mehtod to set arithmetic calculations on Day, Month, or Year
 
         const Date& operator+=(const Date&);    // Compound assignment operator += overload
         const Date& operator-=(const Date&);    // Compound assignment operator -= overload
@@ -54,7 +52,6 @@ class Date
         int day;
         int month;
         int year;
-        bool leapYear;
         static OrderFormat orderFormat; 
         static DelimiterFormat delimiterFormat;
         static MonthFormat monthFormat;
@@ -62,6 +59,10 @@ class Date
         static ArithmeticFormat arithmeticFormat;     // Static attribute to determine arithmetic calculations
 
 };
+bool isValidDate(int, int, int);// Method to check if date values result in valid date
+bool isLeapYear(int);           // Method to determine if the set year is a leap year
+int daysInMonth(int, int);
+
 istream& operator>>(istream&, Date&);   // Input Overload
 
 class DateException
