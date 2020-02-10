@@ -39,12 +39,13 @@ class Date
         static void outputFormat(DayOfWeekFormat);  // Method to set whether the day of the week is output
         static void Arithmetic(ArithmeticFormat);   // Mehtod to set arithmetic calculations on Day, Month, or Year
 
+        const Date& operator++();               // Pre-Increment
+        Date operator++(int);                  // Post-Increment
+        const Date& operator--();               // Pre-Decrement
+        Date operator--(int);                  // Post-Decrement
+        int operator-(const Date&) const;
         const Date& operator+=(const Date&);    // Compound assignment operator += overload
         const Date& operator-=(const Date&);    // Compound assignment operator -= overload
-        const Date& operator++();               // Pre-Increment
-        Date& operator++(int);                  // Post-Increment
-        const Date& operator--();               // Pre-Decrement
-        Date& operator--(int);                  // Post-Decrement
         bool operator>(const Date&) const;      // Relational Operator == overload
         bool operator<(const Date&) const;      // Relational Operator != overload
         bool operator>=(const Date&) const;     // Relational Operator >= overload

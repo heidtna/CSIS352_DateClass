@@ -19,14 +19,6 @@ namespace DateNameSpace
 Date::Date()
 {
     setToday();
-    // tm *current;
-    // time_t lt;
-    // lt = time(0);
-    // current = localtime(&lt);
-
-    // day = current->tm_mday;
-    // month = current->tm_mon+1;
-    // year = current->tm_year+1900;
 }
 
 // Description: Constructor to initialize Date members to parameter
@@ -239,32 +231,91 @@ MonthFormat Date::monthFormat = Numeric;
 DayOfWeekFormat Date::dayOfWeekFormat = NoWeekday;
 ArithmeticFormat Date::arithmeticFormat = Days;
 
+// Description: Overloads the pre-increment operator
+// Precondition: Date object exists and is initialized
+// Postcondition: Date object incremented one day and returned
+const Date& Date::operator++()
+{
+    if (day+1 > daysInMonth(month, year))
+    {
+        if (month+1 > 12)
+        {
+            day = 1;
+            month = 1;
+            year = year + 1;
+        }
+        else
+        {
+            day = 1;
+            month = month + 1;
+        }
+    }
+    else
+    {
+        day = day + 1;
+    }
+    
+    return *this;
+}
 
+// Description: Overloads the post-increment operator
+// Precondition: Date object exists and is initialized
+// Postcondition: tmp Date object initialized to current (not today's)
+//                values, 'this' date object is incremented one day 
+//                and tmp is returned.
+Date Date::operator++(int)
+{
+    Date tmp(month, day, year);
+    Date::operator++();
+    return tmp;
+}
+
+// Description: Overloads the pre-decrement operator
+// Precondition: Date object exists and is initialized
+// Postcondition: Date object is decremented one day and returned
+const Date& Date::operator--()
+{
+if (day-1 == 0)
+    {
+        if (month-1 == 0)
+        {
+            year = year -1;
+            month = 12;
+            day = daysInMonth(month, year);
+        }
+        else
+        {
+            month = month - 1;
+            day = daysInMonth(month, year);
+        }
+    }
+    else
+    {
+        day = day - 1;
+    }
+
+    return *this;
+}
+
+// Description: Overloads the post-decrement operator
+// Precondition: Date object exists and is initialized
+// Postcondition: tmp Date object initialized to current (not today's)
+//                values, 'this' Date object is decremented on day
+//                and tmp is returned
+Date Date::operator--(int)
+{
+    Date tmp(month, day, year);
+    Date::operator--();
+    return tmp;
+}
 
 // Description:
 // Precondition:
 // Postcondition:
+int Date::operator-(const Date&) const
+{
 
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
-
-// Description:
-// Precondition:
-// Postcondition:
-
+}
 
 // Description:
 // Precondition:

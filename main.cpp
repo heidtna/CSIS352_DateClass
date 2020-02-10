@@ -195,19 +195,19 @@ int main()
    Date today; // current date
    d2 = today;
    cout << d2 << endl;
-/*
    d3 = d2++;  // increment a day
-   cout << d2 << endl;
+   cout << d2 << endl; // 2/11/2020
    d3++;
    d3++;
-   cout << d3 << endl;
+   cout << d3 << endl; // 2/12/2020
    d2 = ++d3;
-   cout << d2 << endl;
+   cout << d2 << endl; // 2/13/2020
    d2--;
-   cout << d2 << endl;
+   cout << d2 << endl; // 2//12/2020
    d3 = --d2;
    --d2;
-   cout << d3 << endl << d2 << endl;
+   cout << d3 << endl << d2 << endl; // 2/11/2020    2/10/2020
+/*
 */ 
 
 
