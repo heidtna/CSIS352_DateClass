@@ -30,9 +30,13 @@ class Date
         int getYear() const;            // Method to retrieve the Year attribute
         void setToday();                // Method to reset Date members to current date values
         void setDate(int, int, int);    // Method to set day, month, and year attributes
+        int daysUntil() const;
+        int until() const;
         //void setDaysInMonth(int);       // Method to set the number of days in the set month
         string convertMonth(int) const; // Method to return the name of the set integer month
         string getDayOfWeek() const;    // Method to return the day of the week for the set date
+        int convertToMonths() const;
+        int convertToDays(const Date&) const;
         static void outputFormat(OrderFormat);      // Method to set the order of the output
         static void outputFormat(DelimiterFormat);  // Method to set the delimiter of the output
         static void outputFormat(MonthFormat);      // Method to set the output format of the month member
@@ -44,9 +48,12 @@ class Date
         const Date& operator--();               // Pre-Decrement
         Date operator--(int);                  // Post-Decrement
         int operator-(const Date&) const;
-        const Date& operator+=(const Date&);    // Compound assignment operator += overload
-        const Date& operator-=(const Date&);    // Compound assignment operator -= overload
+        Date operator-(int) const;
+        Date operator+(int) const;
+        void operator=(const Date&);
         bool operator>(const Date&) const;      // Relational Operator == overload
+        const Date& operator+=(int);    // Compound assignment operator += overload
+        const Date& operator-=(int);    // Compound assignment operator -= overload
         bool operator<(const Date&) const;      // Relational Operator != overload
         bool operator>=(const Date&) const;     // Relational Operator >= overload
         bool operator<=(const Date&) const;     // Relational Operator <= overload

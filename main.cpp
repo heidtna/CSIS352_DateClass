@@ -213,7 +213,6 @@ int main()
 
 /*************** NEXT LEVEL FOR 25% MORE CREDIT ******************/
 
-/*
    cout << "----------------------------------------------------------\n";
    Date::Arithmetic(Years);  // the default is Days
    Date FluxCapacitor(11,5,1955);  // November 5, 1955
@@ -311,6 +310,7 @@ int main()
    num -= d1-d2;
    num += d1-d2;
    cout << "num is " << num << endl;
+/*
 */
 
 /************************* BONUS LEVEL ***************************/

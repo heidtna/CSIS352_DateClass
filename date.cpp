@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <ctime>
+#include <chrono>
 #include "date.h"
 using namespace std;
 
@@ -69,6 +70,22 @@ int Date::getYear() const
     return year;
 }
 
+// Description: Resets the date members to values indicating 
+//              today's date
+// Precondition: Date object exists and is intitialized
+// Postcondition: Date members are set to present date values
+void Date::setToday()
+{
+    tm *current;
+    time_t lt;
+    lt = time(0);
+    current = localtime(&lt);
+
+    day = current->tm_mday;
+    month = current->tm_mon+1;
+    year = current->tm_year+1900;
+}
+
 // Description: Sets the members of a Date object only if
 //              passed parameters are valid
 // Precondition: Date object exists and parameters are valid
@@ -83,16 +100,39 @@ void Date::setDate(int newMonth, int newDay, int newYear)
     }
 }
 
-void Date::setToday()
+// Description: Calculates the number of days until some event
+//              in the same year
+// Precondition: Date object exits and is initialized
+// Postcondition: Number of days until date is returned
+int Date::daysUntil() const
 {
-    tm *current;
-    time_t lt;
-    lt = time(0);
-    current = localtime(&lt);
+    Date today = Today();
+    Date event = Date(month, day, today.year);
 
-    day = current->tm_mday;
-    month = current->tm_mon+1;
-    year = current->tm_year+1900;
+    int todayInDays = convertToDays(today);
+    int eventInDays = convertToDays(event);
+
+    return eventInDays - todayInDays;
+}
+
+// Description: Calculate the length of time until a Date in days, months,
+//              or years depending on Format specifier
+// Precondition: Date object exists and is initiailized
+// Postcondition: Difference between today's date and Date specified is returned
+int Date::until() const
+{
+    switch (arithmeticFormat)
+    {
+        int diffDays;
+
+        case Days   :
+            diffDays = convertToDays(*this) - convertToDays(Date::Today());
+            return diffDays;
+
+        case Years  :   
+            return getYear() - Date::Today().getYear();    
+    }
+    return 0;
 }
 
 // Description: Return a string containing the name of 
@@ -179,6 +219,51 @@ string Date::getDayOfWeek() const
     }        
     return 0;    
 }
+// Description:
+// Precondition:
+// Postcondition:
+int Date::convertToMonths() const
+{
+    if (year < 1)
+    {
+        return month;
+    }
+    else
+    {
+        return year-1 * 12 + month;
+    }
+    
+    return 0;
+}
+
+// Description:
+// Precondition:
+// Postcondition:
+int Date::convertToDays(const Date& date) const
+{
+      int numDays;
+      int numLeapYears;
+      int daysByMonth[12] = {0, 31, 59, 90, 120, 151, 181, 
+                             212, 242, 273, 304, 334};
+
+      if (date.getMonth() > 2)
+      {
+          numLeapYears = date.getYear() / 4 - date.getYear() / 100 + 
+                         date.getYear() / 400;
+      }
+      else
+      {
+          numLeapYears = (date.getYear() - 1) / 4 -
+                         (date.getYear() - 1) / 100 +
+                         (date.getYear() - 1) / 400;
+      }
+
+    numDays = date.getYear() * 365 + numLeapYears + 
+              daysByMonth[month-1] + date.getDay();
+    
+    return numDays;
+}
+
 
 // Description: Changes the member that determines the output
 //              order of Date members
@@ -236,25 +321,34 @@ ArithmeticFormat Date::arithmeticFormat = Days;
 // Postcondition: Date object incremented one day and returned
 const Date& Date::operator++()
 {
-    if (day+1 > daysInMonth(month, year))
+    switch (arithmeticFormat)
     {
-        if (month+1 > 12)
-        {
-            day = 1;
-            month = 1;
-            year = year + 1;
-        }
-        else
-        {
-            day = 1;
-            month = month + 1;
-        }
+        case Days:   
+            if (day+1 > daysInMonth(month, year))
+            {
+                if (month+1 > 12)
+                {
+                    day = 1;
+                    month = 1;
+                    year = year + 1;
+                }
+                else
+                {
+                    day = 1;
+                    month = month + 1;
+                }
+            }
+            else
+            {
+                day = day + 1;
+            }
+            break;
+
+        case Years:   
+            year = year + 1; 
+            break;
     }
-    else
-    {
-        day = day + 1;
-    }
-    
+
     return *this;
 }
 
@@ -275,23 +369,32 @@ Date Date::operator++(int)
 // Postcondition: Date object is decremented one day and returned
 const Date& Date::operator--()
 {
-if (day-1 == 0)
+    switch (arithmeticFormat)
     {
-        if (month-1 == 0)
-        {
-            year = year -1;
-            month = 12;
-            day = daysInMonth(month, year);
-        }
-        else
-        {
-            month = month - 1;
-            day = daysInMonth(month, year);
-        }
-    }
-    else
-    {
-        day = day - 1;
+        case Days:   
+            if (day-1 == 0)
+            {
+                if (month-1 == 0)
+                {
+                    year = year - 1;
+                    month = 12;
+                    day = daysInMonth(month, year);
+                }
+                else
+                {
+                    month = month - 1;
+                    day = daysInMonth(month, year);
+                }
+            }
+            else
+            {
+                day = day - 1;
+            }
+            break;
+
+        case Years:   
+            year = year - 1; 
+            break;
     }
 
     return *this;
@@ -309,12 +412,172 @@ Date Date::operator--(int)
     return tmp;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
-int Date::operator-(const Date&) const
+// Description: Calculate the difference between two Date objects
+// Precondition: Date objects exist and are initialized
+// Postcondition: Integer difference between Dates is returned
+int Date::operator-(const Date& date) const
 {
+    int thisDateInDays;
+    int otherDateInDays;
+    int diffYears;
 
+    switch (arithmeticFormat)
+    {
+        case Days:
+            thisDateInDays = convertToDays(*this);
+            otherDateInDays = convertToDays(date);
+            //cout << "This Days: " << thisDateInDays << endl;
+            //cout << "Other Days: " << otherDateInDays << endl;
+
+            return -1*(otherDateInDays - thisDateInDays);
+
+        case Years:
+            diffYears = getYear() - date.getYear();
+
+            if (date.getMonth() > getMonth())
+            {
+                diffYears = diffYears - 1;
+            }
+            else if (date.getMonth() == getMonth() &&
+                    date.getDay() > getDay())
+            {
+                diffYears = diffYears - 1;
+            }
+
+            return diffYears;
+    }
+
+    return 0;
+}
+
+// Description: Adds an integer value to a Date object. Affect on Date
+//              object is determined by arithmetic format member
+// Precondition: Date object exists and is initialized. amtToSubtract
+//               is Int
+// Postcondition: Date object reflecting change is returned
+Date Date::operator-(int amtToSubtract) const
+{
+    Date newDate = *this;
+
+    switch (arithmeticFormat)
+    {
+        case Days:
+
+            while (newDate.day - amtToSubtract <= 0)
+            {
+                amtToSubtract -= newDate.day;
+                newDate.month -= 1;
+
+                if (newDate.month < 1)
+                {
+                    newDate.month = 12;
+                    newDate.year -= 1;
+                }
+
+                newDate.day = 
+                    daysInMonth(newDate.getMonth(), newDate.getYear()) - amtToSubtract;
+            }
+
+            newDate.day -= amtToSubtract;
+            return newDate;
+            
+        case Years:
+            newDate.year -= amtToSubtract;
+
+            return newDate;
+    }
+    return *this;
+}
+
+// Description: Adds an integer value to a Date object. Affect on Date
+//              object is determined by arithmetic format member
+// Precondition: Date object exists and is initialized. amtTo Add is Int
+// Postcondition: Date object reflecting change is returned
+Date Date::operator+(int amtToAdd) const
+{
+    Date newDate = *this;
+
+    switch (arithmeticFormat)
+    {
+        case Days:  
+            newDate.day += amtToAdd;
+
+            while ( newDate.day > daysInMonth(newDate.getMonth(), newDate.getYear()) )
+            {
+                newDate.day -= daysInMonth(newDate.getMonth(), newDate.getYear());
+                newDate.month += 1;
+                
+                if (newDate.month > 12)
+                {
+                    newDate.month = 1;
+                    newDate.year += 1;
+                }
+            }
+
+            return newDate;
+            
+        case Years:
+            newDate.year += amtToAdd;
+
+            return newDate;
+    }
+    return *this;
+}
+
+// Description: Sets the member values of one Date object to equal
+//              those of another
+// Precondition: Date objects exist and are initialized
+// Postcondition: Date object members are set to those of parameter's
+void Date::operator=(const Date& date)
+{
+    day = date.day;
+    month = date.month;
+    year = date.year;
+}
+
+// Description: Determines if Date object comes after parameter Date
+//              object chronologically
+// Precondition: Date objects exist and are initialized
+// Postcondition: Boolean value is returned
+bool Date::operator>(const Date& date) const
+{
+    if (getYear() > date.getYear())
+    {
+        return true;
+    }
+    else if (getYear() == date.getYear() && getMonth() > date.getMonth())
+    {
+        return true;
+    }
+    else if (getYear() == date.getYear() && getMonth() == date.getMonth() &&
+             getDay() > date.getDay())
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+// Description: Overloads the compound assignment addition operator
+// Precondition: Date object exists and is initialized
+// Postcondition: Date object reflecting change is returned
+const Date& Date::operator+=(int amtToAdd)
+{
+    Date tmp = *this;
+    tmp = tmp + amtToAdd;
+    *this = tmp;
+    return *this;
+}
+
+// Description: Overloads the compound assignment subtraction operator
+// Precondition: Date object exists and is initialized
+// Postcondition: Date object reflecting change is returned
+const Date& Date::operator-=(int amtToSubtract)
+{
+    Date tmp = *this;
+    tmp = tmp - amtToSubtract;
+    *this = tmp;
+    return *this;
 }
 
 // Description:
@@ -324,11 +587,6 @@ bool Date::operator==(const Date& date) const
 {
     return month == date.getMonth() && day == date.getDay() && year == date.getYear();
 }
-
-// Description:
-// Precondition:
-// Postcondition:
-
 
 // Description:
 // Precondition:
@@ -395,6 +653,7 @@ ostream& operator<<(ostream& o, const Date& date)
 
     return o;
 }
+
 // Description: Overrides input operator to function with
 //              Date objects and sets members if valid
 // Precondition: Date object exists and is initialized
