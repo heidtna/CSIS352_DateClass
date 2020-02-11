@@ -46,7 +46,6 @@ int main()
 
    cout << "----------------- MiddleEndian -------------------\n";
    cout << "Date: " << d1 << endl;  // Date: 2/5/2019
-   cout << "First" << endl;
    cout << "Date: " << left << setw(12) << d1 << '*' << endl;  
    cout << "Date: " << right << setw(12) << d1 << '*' << endl;  
    cout << "Date: " << d1 << endl;  // Date: 2/5/2019

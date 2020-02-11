@@ -7,7 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <ctime>
-#include <chrono>
+#include <regex>
 #include "date.h"
 using namespace std;
 
@@ -663,14 +663,41 @@ ostream& operator<<(ostream& o, const Date& date)
 istream& operator>>(istream& i, Date& date)
 {
     int tmpMonth, tmpDay, tmpYear;
-    i >> tmpMonth; i.get();
-    i >> tmpDay; i.get();
-    i >> tmpYear;
+    string input;
+    const string error = "input stream failure: ";//iostream error";
+    
+    getline(cin, input);
+    // i >> tmpMonth; i.get();
+    // i >> tmpDay; i.get();
+    // i >> tmpYear;
 
+    // string input = to_string(tmpMonth) + 
+    //                to_string(tmpDay) +
+    //                to_string(tmpYear);
+    // regex expr("\\d+");
+
+    regex expr("\\d*");
+    
+    try
+    {
+        tmpMonth = stoi(input.substr(0, 2));
+        tmpDay = stoi(input.substr(2, 4));
+        tmpYear = stoi(input.substr(4));
+    }
+    catch(const std::invalid_argument& e)
+    {
+        throw ios_base::failure(error);
+    }
+    
     if (isValidDate(tmpMonth, tmpDay, tmpYear))
     {
         date.setDate(tmpMonth, tmpDay, tmpYear);
     }
+    // else
+    // {
+    //     throw ios_base::failure(error);
+    // }
+    
     return i;
 }
 
