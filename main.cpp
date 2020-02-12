@@ -239,6 +239,7 @@ int main()
         << LincolnBirthday - LincolnDeath << " days after his death\n";
    cout << "Abraham Lincoln died " 
         << today-LincolnDeath << " days ago\n";
+
    cout << "It's " << LincolnBirthday.daysUntil() // the year doesn't matter
         << " days until Abraham Lincoln's birthday.\n";
         
@@ -314,11 +315,11 @@ int main()
 
 /************************* BONUS LEVEL ***************************/
 
-/*
    cout << "----------------------------------------------------------\n";
    Date::Arithmetic(Months);
    cout << "don't forget that you have an appointment in " 
         << appointment.until() << " months!\n";
+/*
 */
        
 // All operators and methods that apply to Days and Years must

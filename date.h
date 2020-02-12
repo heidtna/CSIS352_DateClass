@@ -31,30 +31,30 @@ class Date
         int getYear() const;            // Method to retrieve the Year attribute
         void setToday();                // Method to reset Date members to current date values
         void setDate(int, int, int);    // Method to set day, month, and year attributes
-        int daysUntil() const;
-        int until() const;
+        int daysUntil() const;          // Calculates days from today to an event Date
+        int until() const;              // Calculates length of time until event
         //void setDaysInMonth(int);       // Method to set the number of days in the set month
         string convertMonth(int) const; // Method to return the name of the set integer month
         string getDayOfWeek() const;    // Method to return the day of the week for the set date
         int convertToMonths() const;
-        int convertToDays(const Date&) const;
+        int convertToDays(const Date&) const;       // Calculates number of days using Date members
         static void outputFormat(OrderFormat);      // Method to set the order of the output
         static void outputFormat(DelimiterFormat);  // Method to set the delimiter of the output
         static void outputFormat(MonthFormat);      // Method to set the output format of the month member
         static void outputFormat(DayOfWeekFormat);  // Method to set whether the day of the week is output
         static void Arithmetic(ArithmeticFormat);   // Mehtod to set arithmetic calculations on Day, Month, or Year
 
-        const Date& operator++();               // Pre-Increment
-        Date operator++(int);                  // Post-Increment
-        const Date& operator--();               // Pre-Decrement
-        Date operator--(int);                  // Post-Decrement
-        int operator-(const Date&) const;
-        Date operator-(int) const;
-        Date operator+(int) const;
-        void operator=(const Date&);
+        const Date& operator++();               // Pre-Increment overload
+        Date operator++(int);                   // Post-Increment overload
+        const Date& operator--();               // Pre-Decrement overload
+        Date operator--(int);                   // Post-Decrement overload
+        int operator-(const Date&) const;       // Overload subtraction operator for two Dates
+        Date operator-(int) const;              // Overload subtraction operator for a Date and and Int
+        Date operator+(int) const;              // Overload addition operator for a Date and an Int
+        void operator=(const Date&);            // Overload assignment operator
+        const Date& operator+=(int);            // Compound assignment operator += overload
+        const Date& operator-=(int);            // Compound assignment operator -= overload
         bool operator>(const Date&) const;      // Relational Operator == overload
-        const Date& operator+=(int);    // Compound assignment operator += overload
-        const Date& operator-=(int);    // Compound assignment operator -= overload
         bool operator<(const Date&) const;      // Relational Operator != overload
         bool operator>=(const Date&) const;     // Relational Operator >= overload
         bool operator<=(const Date&) const;     // Relational Operator <= overload

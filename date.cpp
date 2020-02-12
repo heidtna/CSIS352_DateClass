@@ -109,6 +109,11 @@ int Date::daysUntil() const
     Date today = Today();
     Date event = Date(month, day, today.year);
 
+    if (today >= event)
+    {
+        event.setDate(event.month, event.day, event.year+1);
+    }
+
     int todayInDays = convertToDays(today);
     int eventInDays = convertToDays(event);
 
@@ -125,11 +130,14 @@ int Date::until() const
     {
         int diffDays;
 
-        case Days   :
+        case Days:
             diffDays = convertToDays(*this) - convertToDays(Date::Today());
             return diffDays;
 
-        case Years  :   
+        case Months:
+            return convertToMonths() - Date::Today().convertToMonths();
+        
+        case Years:   
             return getYear() - Date::Today().getYear();    
     }
     return 0;
@@ -230,15 +238,16 @@ int Date::convertToMonths() const
     }
     else
     {
-        return year-1 * 12 + month;
+        return (year - 1) * 12 + month;
     }
     
     return 0;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Converts a Date objet into an Integer number of Days
+//              (from 1/1/1)
+// Precondition: Date object exists and is initialized
+// Postcondition: Number of days calculated from members is returned
 int Date::convertToDays(const Date& date) const
 {
       int numDays;
@@ -432,19 +441,44 @@ int Date::operator-(const Date& date) const
             return -1*(otherDateInDays - thisDateInDays);
 
         case Years:
-            diffYears = getYear() - date.getYear();
+            Date larger;
+            Date smaller;
 
-            if (date.getMonth() > getMonth())
+            int thisDateInDays = convertToDays(*this);
+            int otherDateInDays = convertToDays(date);
+            
+            if (thisDateInDays > otherDateInDays)
+            {
+                larger = *this;
+                smaller = date;
+            }
+            else
+            {
+                larger = date;
+                smaller = *this;
+            }
+            
+            diffYears = larger.getYear() - smaller.getYear();
+
+            if (smaller.getMonth() > larger.getMonth())
             {
                 diffYears = diffYears - 1;
             }
-            else if (date.getMonth() == getMonth() &&
-                    date.getDay() > getDay())
+            else if (smaller.getMonth() == larger.getMonth() &&
+                    smaller.getDay() > larger.getDay())
             {
                 diffYears = diffYears - 1;
             }
 
-            return diffYears;
+            if (thisDateInDays < otherDateInDays)
+            {
+                return -1*diffYears;
+            }
+            
+            return diffYears;           
+
+
+        return diffYears;
     }
 
     return 0;
@@ -535,29 +569,6 @@ void Date::operator=(const Date& date)
     year = date.year;
 }
 
-// Description: Determines if Date object comes after parameter Date
-//              object chronologically
-// Precondition: Date objects exist and are initialized
-// Postcondition: Boolean value is returned
-bool Date::operator>(const Date& date) const
-{
-    if (getYear() > date.getYear())
-    {
-        return true;
-    }
-    else if (getYear() == date.getYear() && getMonth() > date.getMonth())
-    {
-        return true;
-    }
-    else if (getYear() == date.getYear() && getMonth() == date.getMonth() &&
-             getDay() > date.getDay())
-    {
-        return true;
-    }
-    
-    return false;
-}
-
 // Description: Overloads the compound assignment addition operator
 // Precondition: Date object exists and is initialized
 // Postcondition: Date object reflecting change is returned
@@ -580,17 +591,75 @@ const Date& Date::operator-=(int amtToSubtract)
     return *this;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Determines if Date object comes after parameter Date
+//              object chronologically
+// Precondition: Date objects exist and are initialized
+// Postcondition: Boolean value reflecting comparison is returned
+bool Date::operator>(const Date& date) const
+{
+    if (getYear() > date.getYear())
+    {
+        return true;
+    }
+    else if (getYear() == date.getYear() && getMonth() > date.getMonth())
+    {
+        return true;
+    }
+    else if (getYear() == date.getYear() && getMonth() == date.getMonth() &&
+             getDay() > date.getDay())
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+// Description: Determines if Date object comes before parameter Date
+//              object chronologically
+// Precondition: Date objects exist and are initialized
+// Postcondition: Boolean value reflectin comparison is returned
+bool Date::operator<(const Date& date) const
+{
+    return !(*this > date);
+}
+
+// Description: Determins if Date object comes after or is equal to 
+//              parameter Date object chronologically
+// Precondition: Date objects exist and are initialized
+// Postcondition: Boolean value reflecting comparison is returnecd
+bool Date::operator>=(const Date& date) const
+{
+    return ( (*this > date) || (*this == date) );
+}
+
+// Description: Determins if Date object comes before or is equal to 
+//              parameter Date object chronologically
+// Precondition: Date objects exist and are initialized
+// Postcondition: Boolean value reflecting comparison is returnecd
+bool Date::operator<=(const Date& date) const
+{
+    return ( (*this < date) || (*this == date) );
+}
+
+// Description: Determines if two Date objects' members are equal
+// Precondition: Date objects exist and are initialized
+// Postcondition: Boolean value reflecting comparison is returned
 bool Date::operator==(const Date& date) const
 {
     return month == date.getMonth() && day == date.getDay() && year == date.getYear();
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Determines if two Date objects' members are not equal
+// Precondition: Date objects exist and are initialized
+// Postcondition: Boolean value reflecting comparison is returned
+bool Date::operator!=(const Date& date) const
+{
+    return month != date.getMonth() || day != date.getDay() || year != date.getYear();
+}
+
+// Description: Overloads the output operator
+// Precondition: Date object exists and is initialized
+// Postcondition: Date object members are returned
 ostream& operator<<(ostream& o, const Date& date)
 {
     string firstDelim, secondDelim;
@@ -649,61 +718,57 @@ ostream& operator<<(ostream& o, const Date& date)
             o << dateString;
     }
 
-    
-
     return o;
 }
 
 // Description: Overrides input operator to function with
 //              Date objects and sets members if valid
-// Precondition: Date object exists and is initialized
+// Precondition: Date object exists and is initialized.
 //               Input format must be integers and in order
-//               of month, day, year
+//               of month, day, year.
 // Postcondition: Date object members are set
 istream& operator>>(istream& i, Date& date)
 {
     int tmpMonth, tmpDay, tmpYear;
     string input;
-    const string error = "input stream failure: ";//iostream error";
-    
+    const string error = "input stream failure: ";
+    regex inputExpr("\\d{1,2}\\D\\d+{1,2}\\D\\d+{4}"); // expcted format
+    regex delim("(\\D)(\\d+)(\\D)"); // use to locate delimiters
+    smatch m; // match_result
+
     getline(cin, input);
-    // i >> tmpMonth; i.get();
-    // i >> tmpDay; i.get();
-    // i >> tmpYear;
+    regex_search(input, m, delim); // search for delimiters
 
-    // string input = to_string(tmpMonth) + 
-    //                to_string(tmpDay) +
-    //                to_string(tmpYear);
-    // regex expr("\\d+");
-
-    regex expr("\\d*");
-    
-    try
-    {
-        tmpMonth = stoi(input.substr(0, 2));
-        tmpDay = stoi(input.substr(2, 4));
-        tmpYear = stoi(input.substr(4));
-    }
-    catch(const std::invalid_argument& e)
+    if (!regex_match(input, inputExpr))
     {
         throw ios_base::failure(error);
     }
     
+    // match_result m will have 4 items
+    // Example input: 1-15-1990
+    // m[0] is full match: '-15-'
+    // m[1] is first item only: '-' <-- (first delimiter)
+    // m[2] is second item only: '15'
+    // m[3] is third item only: '-' <-- (second delimiter)
+    int leftDelim = m.position(1); // position of match_result[1] in target
+    int rightDelim = m.position(3); // position of match_result[3] in target
+
+    tmpMonth = stoi(input.substr(0, leftDelim));
+    tmpDay = stoi(input.substr(leftDelim+1, rightDelim));
+    tmpYear = stoi(input.substr(rightDelim+1));
+
     if (isValidDate(tmpMonth, tmpDay, tmpYear))
     {
         date.setDate(tmpMonth, tmpDay, tmpYear);
     }
-    // else
-    // {
-    //     throw ios_base::failure(error);
-    // }
     
     return i;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Determines if the members of a Date object correspond
+//              to a valid Date
+// Precondition: parameters are integer values
+// Postcondition: Boolean value reflecting validity is returned
 bool isValidDate(int chkMonth, int chkDay, int chkYear)
 {
     if (chkMonth < 1 || chkMonth > 12)
@@ -720,17 +785,18 @@ bool isValidDate(int chkMonth, int chkDay, int chkYear)
     return 1;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Determines if a given year is a leap year
+// Precondition: Year is an integer
+// Postcondition: Boolean value is returned
 bool isLeapYear(int Year)
 {
     return Year % 400 == 0 || Year % 4 == 0 && Year % 100 != 0;
 }
 
-// Description:
-// Precondition:
-// Postcondition:
+// Description: Checks the number of days in a given month
+//              in a given year
+// Precondition: month and year parameters are integers
+// Postcondition: integer days is returned
 int daysInMonth(int monthToCheck, int inYear)
 {
     switch (monthToCheck)
@@ -759,17 +825,20 @@ int daysInMonth(int monthToCheck, int inYear)
     return 0;
 }
 
+// Descripton: Create object of DateException and assign member
+// Precondition: m is a string
+// Postcondition: Object created and member 'message' is set
 DateException::DateException(const string& m)
 {
     message = m;
 }
 
+// Descripton: Returns the details of the error thrown
+// Precondition: DateException is thrown
+// Postcondition: Message is returned
 string DateException::what()
 {
     return message;
 }
 
 }
-
-/*
-*/
