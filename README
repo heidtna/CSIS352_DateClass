@@ -1,0 +1,118 @@
+File:       README
+Author:     Nathan Heidt
+Program:    Assignment 5
+Date:       02-12-2020
+
+BUILDING THE PROGRAM
+    This program was written in C++ and can be built
+    on a Linux system using g++ compiler. To build the
+    program type 'make' at the command line to create 
+    the executable called 'prog4'
+
+RUNNING THE PROGRAM
+    Type 'prog5' at the command line after building
+
+PROGRAM DESCRIPTION
+    This program will run through a main.cpp file that
+    tests the various members and member function of the
+    Date class. Program allows for various arithmetic and
+    relational operations using Date objects as well as other
+    methods of conversion and Date checking. Main program 
+    will ask the user to enter their birthday twice, for 
+    purposes of testing exception handling. Program is also 
+    written with a DateException Class
+
+PROGRAM INPUT
+    Input for this program can either be through the
+    keyboard at the terminal or through redirected input.
+    Input is assumed to be dates in Middle Endian (mm/dd/yyyy)
+    format. Delimiter between can be any non-digit character.
+    Program expects only one delimiter between values.
+
+PROGRAM OUTPUT
+    Program will output all test results from main. After input
+    of birthdate, program will return the birthdate if valid input
+    was given, or throw an exception otherwise.
+
+PROGRAM DESIGN
+    Program implements a 'Date' class and a 'DateException' class
+    of which objects of each can be created. An object of Date can 
+    be created with a default constructor taking no parameters, which 
+    will then create the object defaulted to the current date. An object
+    can also be created by passing in three integer values in order month,
+    day, then year. Program will throw an instance of DateException if an 
+    attempt to created invalid date is made, or if an attempt to changed an
+    existing Date object is made. Program allows for all relational operations,
+    as well as the arithmetic operations that make sense for Date with the
+    exceptions of (*,/,%,+). Though the addtion of two Date objects is not
+    allowed, an integer value can be added to an existing Date object.
+
+    This program also allows the user to decide the output format of 
+    Date objects in terms of order of values, delimiter used, whether 
+    month output is integer value or string (3 vs "March"), as well
+    as the presence or absence of the Day of the Week for that Date (Sunday,
+    Monday, Tuesday, etc.) The user is also allowed to decide on which value
+    integer arithmetic operations are performed on Date objects (day, month,
+    or year)
+
+FILE INDEX
+    This program contains the following files
+    File            Functions               Description 
+    -------------   ------------------      --------------------
+    date.h                                  fraction class header
+
+    date.cpp        Date                    Constructor (2 overloads)
+                    Today                   creates date object using current date
+                    getMonth                returns month member
+                    getDay                  returns day member
+                    getYear                 returns year member
+                    setToday                sets existing Date object to current date
+                    setDate                 change all members of existing Date object
+                    daysUntil               calculate number of days from current date to object date
+                    until                   same as 'daysUntil' except calculation is variable (days, months, years)
+                    convertMonth            return the string value of month member
+                    getDayOfWeek            return day of week for Date object
+                    convertToMonths         convert Date into number of months since 1/1/1
+                    convertToDays           convert Date into number of days since 1/1/1
+                    outputFormat            set format variables for output of Date (4 overloads)
+                    arithmetic              set member upon which arithmetic calculations are performed
+                    operator++              overload increment operator (post/pre)
+                    operator--              overload decrement operator (post/pre)
+                    operator-               overload subtraction operator (2 overloads, Date & Int)
+                    operator+               overload addition operator
+                    operator=               overload assignment operator
+                    operator+=              overload compound assignment operator (addition)
+                    operator-=              overload compound assignment operator (subtraction)
+                    operator>               overload greater-than relational operator
+                    operator<               overload less-than relational operator                    
+                    operator>=              overload greater-than or equal-to relational operator
+                    operator<=              overload less-than or equal-to relational operator
+                    operator==              overload equal-to relational operator
+                    operator!=              overload not equal-to relational operator
+                    operator<<              overload outstream operator
+                    
+                    isValidDate             Determine if Date object reflects an actual date
+                    isLeapYear              Determine if Date object reflects a leap year
+                    daysInMonth             return the number of days in a given month in given year                   
+                    operator>>              overload instream operator
+                    
+
+    main.cpp        main                    calls other functions
+
+    makefile
+
+    README
+
+PROGRAM TESTING
+    This program was tested using different input methods
+
+    Input Type      Input Values    Result
+    --------------------------------------
+    keyboard        9-9-9           input stream failure: : iostream error
+                    9 9 9999        9/9/9999
+                    May 8, 1989     input stream failure: : iostream error
+                    2-29-2019       DateException: Day is out of range
+                    13/7/2020       DateException: Month is out of range
+
+    There are currently no known bugs. Errors should be reported to Author at:
+    heidtna@mnstate.edu
